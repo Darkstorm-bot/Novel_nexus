@@ -10,6 +10,17 @@ from app.core.logging_config import get_logger
 from app.schemas.pipeline import PipelinePhase, PipelineStatus
 from app.state_machine.pipeline_state_machine import PipelineStateMachine
 from app.memory import MemoryManager
+from app.agents import (
+    ConceptDevelopmentAgent,
+    OutlineGenerationAgent,
+    BeatSheetCreationAgent,
+    DraftWritingAgent,
+    CritiqueAgent,
+    RewriteAgent,
+    PolishAgent,
+    ConsistencyAgent,
+    ExportAgent,
+)
 
 logger = get_logger(__name__)
 
@@ -30,30 +41,57 @@ class PipelineOrchestrator:
         self.phase_handlers: Dict[PipelinePhase, PhaseHandler] = {}
         self.approval_callbacks: Dict[str, Callable] = {}
         
+        # Initialize agents
+        self.agents = {
+            PipelinePhase.CONCEPT: ConceptDevelopmentAgent(),
+            PipelinePhase.OUTLINE: OutlineGenerationAgent(),
+            PipelinePhase.BEAT_SHEET: BeatSheetCreationAgent(),
+            PipelinePhase.DRAFTING: DraftWritingAgent(),
+            PipelinePhase.CRITIQUE: CritiqueAgent(),
+            PipelinePhase.REWRITE: RewriteAgent(),
+            PipelinePhase.POLISH: PolishAgent(),
+            PipelinePhase.CONSISTENCY: ConsistencyAgent(),
+            PipelinePhase.EXPORT: ExportAgent(),
+        }
+        
         self._register_default_handlers()
     
     def _register_default_handlers(self) -> None:
-        """Register default phase handlers (to be implemented in agents module)."""
-        # These will be replaced with actual agent implementations in Phase D
+        """Register handlers that use the agent instances."""
         self.phase_handlers = {
-            PipelinePhase.CONCEPT: self._default_handler,
-            PipelinePhase.OUTLINE: self._default_handler,
-            PipelinePhase.BEAT_SHEET: self._default_handler,
-            PipelinePhase.DRAFTING: self._default_handler,
-            PipelinePhase.CRITIQUE: self._default_handler,
-            PipelinePhase.REWRITE: self._default_handler,
-            PipelinePhase.POLISH: self._default_handler,
-            PipelinePhase.CONSISTENCY: self._default_handler,
-            PipelinePhase.EXPORT: self._default_handler,
+            PipelinePhase.CONCEPT: self._create_agent_handler(PipelinePhase.CONCEPT),
+            PipelinePhase.OUTLINE: self._create_agent_handler(PipelinePhase.OUTLINE),
+            PipelinePhase.BEAT_SHEET: self._create_agent_handler(PipelinePhase.BEAT_SHEET),
+            PipelinePhase.DRAFTING: self._create_agent_handler(PipelinePhase.DRAFTING),
+            PipelinePhase.CRITIQUE: self._create_agent_handler(PipelinePhase.CRITIQUE),
+            PipelinePhase.REWRITE: self._create_agent_handler(PipelinePhase.REWRITE),
+            PipelinePhase.POLISH: self._create_agent_handler(PipelinePhase.POLISH),
+            PipelinePhase.CONSISTENCY: self._create_agent_handler(PipelinePhase.CONSISTENCY),
+            PipelinePhase.EXPORT: self._create_agent_handler(PipelinePhase.EXPORT),
         }
     
-    async def _default_handler(
-        self,
-        story_id: str,
-        context: Dict[str, Any],
-    ) -> Dict[str, Any]:
-        """Default placeholder handler."""
-        return {"status": "placeholder", "message": "Handler not yet implemented"}
+    def _create_agent_handler(self, phase: PipelinePhase) -> PhaseHandler:
+        """Create a handler function for an agent."""
+        agent = self.agents[phase]
+        
+        async def handler(story_id: str, context: Dict[str, Any]) -> Dict[str, Any]:
+            # Add memory manager to context
+            context["memory_manager"] = self.memory_manager
+            
+            # Run the agent
+            response = await agent.run(story_id, context)
+            
+            # Convert AgentResponse to dict format expected by orchestrator
+            return {
+                "status": "completed" if response.success else "failed",
+                "data": response.data,
+                "errors": response.errors,
+                "warnings": response.warnings,
+                "requires_approval": response.requires_approval,
+                "metadata": response.metadata,
+            }
+        
+        return handler
     
     def register_phase_handler(
         self,
