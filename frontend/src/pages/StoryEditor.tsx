@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import {
   BookOpen,
   Play,
   Pause,
   CheckCircle,
-  XCircle,
-  Clock,
-  ChevronRight,
   MessageSquare,
   Edit3,
   Eye,

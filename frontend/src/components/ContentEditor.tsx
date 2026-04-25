@@ -1,7 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Edit3, Save, Bold, Italic, Underline } from 'lucide-react';
-import type { Chapter } from '../../types';
+import type { Chapter } from '../types';
 
 interface ContentEditorProps {
   chapter: Chapter | null;
