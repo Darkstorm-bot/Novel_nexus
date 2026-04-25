@@ -1,8 +1,8 @@
 # Narrative Nexus V4.0
 
-**AI-Powered Collaborative Story Writing Platform**
+**AI-Powered Collaborative Story Writing Platform with MemPalace Memory System**
 
-A sophisticated full-stack application that leverages Large Language Models (LLMs) to assist writers in creating novels through a structured 9-phase pipeline. Features real-time collaboration, memory-consistent character tracking, and a beautiful modern UI.
+A sophisticated full-stack application that leverages Large Language Models (LLMs) to assist writers in creating novels through a structured 9-phase pipeline. Features **MemPalace integration** for advanced memory management, real-time collaboration, memory-consistent character tracking, and a beautiful modern UI.
 
 ![Status](https://img.shields.io/badge/status-ready-green)
 ![Python](https://img.shields.io/badge/python-3.10+-blue)
@@ -15,11 +15,14 @@ A sophisticated full-stack application that leverages Large Language Models (LLM
 
 ### Core Capabilities
 - **9-Phase Writing Pipeline**: Concept → Outline → Beats → Draft → Critique → Rewrite → Polish → Consistency → Export
-- **AI Agent System**: Specialized agents for each phase using LiteLLM/Ollama
-- **Three-Layer Memory System**: Vector + Episodic + Working Memory for long-term consistency
+- **AI Agent System**: Specialized agents for each phase using LiteLLM/Ollama/LM Studio
+- **MemPalace Memory System**: Advanced long-term memory with ChromaDB vector storage
+- **LM Studio Integration**: Run local LLMs privately with OpenAI-compatible API
 - **Real-Time Collaboration**: WebSocket-powered live updates and diff visualization
 - **Character State Tracking**: Automatic consistency checking across the entire narrative
 - **Human-in-the-Loop**: Approval gates at every critical phase transition
+- **Story Consistency Checking**: AI-powered detection of plot holes and anachronisms
+- **Entity Extraction**: Automatic identification of characters, locations, and objects
 
 ### Tech Stack
 | Component | Technology |
@@ -29,7 +32,7 @@ A sophisticated full-stack application that leverages Large Language Models (LLM
 | **Database** | ChromaDB (Vector), SQLite/PostgreSQL (Relational) |
 | **Memory System** | MemPalace v3.3+ |
 | **State Machine** | `transitions` library |
-| **LLM Integration** | LiteLLM, Ollama, MemPalace |
+| **LLM Integration** | LiteLLM, Ollama, MemPalace, LM Studio |
 | **Local LLM** | LM Studio, Ollama |
 | **Real-time** | WebSockets |
 | **Export** | EbookLib, WeasyPrint |
@@ -42,6 +45,7 @@ A sophisticated full-stack application that leverages Large Language Models (LLM
 - Python 3.10 or higher
 - Node.js 18+ and npm
 - Git
+- LM Studio or Ollama (for local LLM inference)
 
 ### 1. Clone the Repository
 ```bash

@@ -191,3 +191,47 @@ export interface ContentDiff {
     value: string;
   }>;
 }
+
+// MemPalace types
+export interface MemPalaceStatus {
+  initialized: boolean;
+  message?: string;
+  config?: {
+    llm_provider: string;
+    llm_model: string;
+    chroma_path: string;
+  };
+  provider?: {
+    name: string;
+    model: string;
+    endpoint: string;
+    available: boolean;
+    status: string;
+  };
+}
+
+export interface LLMTestConfig {
+  provider: string;
+  model: string;
+  endpoint?: string;
+  api_key?: string;
+  timeout?: number;
+}
+
+export interface ConsistencyReport {
+  consistent: boolean;
+  issues?: Array<{
+    type: string;
+    description: string;
+    severity: 'low' | 'medium' | 'high';
+  }>;
+  suggestions?: string[];
+  raw_response?: string;
+  parsed?: boolean;
+}
+
+export interface MemorySearchResult {
+  content: string;
+  metadata: Record<string, any>;
+  distance?: number;
+}
