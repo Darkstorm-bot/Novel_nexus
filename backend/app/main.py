@@ -84,6 +84,8 @@ async def health_check():
 # Import and include routers
 from app.api.stories import router as stories_router
 from app.api.websocket import router as websocket_router
+from app.api.mempalace import router as mempalace_router
 
 app.include_router(stories_router, prefix="/api/v1/stories", tags=["stories"])
 app.include_router(websocket_router, prefix="/ws", tags=["websocket"])
+app.include_router(mempalace_router, prefix="/api/v1", tags=["mempalace"])
