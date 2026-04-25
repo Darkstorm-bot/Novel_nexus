@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Users, Plus, Edit2, Trash2, Search, Filter } from 'lucide-react';
 import { useEditorStore, useUIStore } from '../store';
-import type { Character, CharacterCreate } from '../types';
+import type { CharacterCreate } from '../types';
 
 const CharacterManager: React.FC = () => {
-  const { characters, setCharacters, selectedCharacter, setSelectedCharacter } = useEditorStore();
+  const { characters, setSelectedCharacter } = useEditorStore();
   const { addNotification } = useUIStore();
   const [showNewCharacterModal, setShowNewCharacterModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');

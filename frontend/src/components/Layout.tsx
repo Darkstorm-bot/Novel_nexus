@@ -17,7 +17,7 @@ import Notifications from './Notifications';
 
 const Layout: React.FC = () => {
   const location = useLocation();
-  const { sidebarOpen, toggleSidebar, notifications } = useUIStore();
+  const { sidebarOpen, toggleSidebar } = useUIStore();
 
   const navItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/' },

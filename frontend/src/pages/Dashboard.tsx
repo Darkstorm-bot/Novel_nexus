@@ -8,7 +8,7 @@ import type { StoryCreate } from '../types';
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
-  const { stories, setStories, setLoading, addStory } = useStoryStore();
+  const { stories, setLoading, addStory } = useStoryStore();
   const { addNotification } = useUIStore();
   const [showNewStoryModal, setShowNewStoryModal] = useState(false);
   const [newStory, setNewStory] = useState<StoryCreate>({ title: '', tags: [] });

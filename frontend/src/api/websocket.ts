@@ -1,12 +1,11 @@
 import { io, Socket } from 'socket.io-client';
-import type { WSMessage, PipelineState } from '../types';
+import type { PipelineState } from '../types';
 
 type WSEventHandler = (payload: any) => void;
 
 class WebSocketClient {
   private socket: Socket | null = null;
   private eventHandlers: Map<string, Set<WSEventHandler>> = new Map();
-  private reconnectAttempts = 0;
   private maxReconnectAttempts = 5;
   private reconnectDelay = 1000;
 
@@ -23,7 +22,6 @@ class WebSocketClient {
 
     this.socket.on('connect', () => {
       console.log('WebSocket connected');
-      this.reconnectAttempts = 0;
     });
 
     this.socket.on('disconnect', (reason) => {
