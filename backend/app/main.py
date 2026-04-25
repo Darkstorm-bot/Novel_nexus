@@ -81,9 +81,9 @@ async def health_check():
     }
 
 
-# Import and include routers (to be added in later phases)
-# from app.api import stories, characters, pipeline, websocket
-# app.include_router(stories.router, prefix="/api/v1/stories", tags=["stories"])
-# app.include_router(characters.router, prefix="/api/v1/characters", tags=["characters"])
-# app.include_router(pipeline.router, prefix="/api/v1/pipeline", tags=["pipeline"])
-# app.include_router(websocket.router, prefix="/ws", tags=["websocket"])
+# Import and include routers
+from app.api.stories import router as stories_router
+from app.api.websocket import router as websocket_router
+
+app.include_router(stories_router, prefix="/api/v1/stories", tags=["stories"])
+app.include_router(websocket_router, prefix="/ws", tags=["websocket"])
