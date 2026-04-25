@@ -1,6 +1,6 @@
 import React from 'react';
 import { BookOpen, FileText } from 'lucide-react';
-import type { Chapter } from '../../types';
+import type { Chapter } from '../types';
 
 interface PreviewPaneProps {
   chapter: Chapter | null;

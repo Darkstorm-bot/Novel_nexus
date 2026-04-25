@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { BrainCircuit, Search, Database, Layers, Clock, Filter } from 'lucide-react';
-import type { MemoryItem, VectorSearchResult } from '../types';
+import type { MemoryItem } from '../types';
 
 const MemoryBrowser: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -13,7 +13,7 @@ const MemoryBrowser: React.FC = () => {
     {
       id: '1',
       content: 'The protagonist discovers a hidden portal in the ancient library.',
-      metadata: { type: 'plot', chapter: '3', importance: 0.9 },
+      metadata: { type: 'plot', chapter: '3' },
       created_at: new Date().toISOString(),
     },
     {
@@ -144,7 +144,7 @@ const MemoryBrowser: React.FC = () => {
                     {memory.metadata.type}
                   </span>
                   <span className="text-xs text-dark-500">
-                    Importance: {(memory.importance * 100).toFixed(0)}%
+                    Score: {((memory.metadata.importance || 0) * 100).toFixed(0)}%
                   </span>
                 </div>
                 <p className="text-sm text-dark-300 line-clamp-2">{memory.content}</p>

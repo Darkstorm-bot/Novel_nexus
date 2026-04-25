@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import type { PipelineState, PipelinePhase } from '../../types';
+import type { PipelineState, PipelinePhase } from '../types';
 
 interface PipelineProgressProps {
   pipeline: PipelineState;

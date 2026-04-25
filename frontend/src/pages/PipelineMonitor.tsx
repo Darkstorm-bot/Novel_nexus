@@ -1,8 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Activity, Play, Pause, CheckCircle, AlertCircle, Clock } from 'lucide-react';
 import { usePipelineStore, useUIStore } from '../store';
-import { api } from '../api/client';
 import type { PipelinePhase } from '../types';
 
 const PHASE_NAMES: Record<PipelinePhase, string> = {
@@ -32,7 +30,6 @@ const PHASE_ICONS: Record<PipelinePhase, any> = {
 const PipelineMonitor: React.FC = () => {
   const { pipeline, isRunning, currentPhase } = usePipelineStore();
   const { addNotification } = useUIStore();
-  const [isStarting, setIsStarting] = React.useState(false);
 
   const handleStart = async () => {
     // This would need a storyId in real implementation

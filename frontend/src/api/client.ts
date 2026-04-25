@@ -3,8 +3,7 @@ import type {
   Story, StoryCreate, StoryUpdate,
   Chapter, ChapterCreate, ChapterUpdate,
   Character, CharacterCreate,
-  PipelineState,
-  ApiResponse, PaginatedResponse 
+  PipelineState
 } from '../types';
 
 const API_BASE_URL = '/api/v1';
@@ -34,24 +33,24 @@ class ApiClient {
   }
 
   // Story endpoints
-  async getStories(): Promise<PaginatedResponse<Story>> {
-    const response = await this.client.get<ApiResponse<PaginatedResponse<Story>>>('/stories');
-    return response.data.data;
+  async getStories(): Promise<Story[]> {
+    const response = await this.client.get<Story[]>('/stories');
+    return response.data;
   }
 
   async getStory(id: string): Promise<Story> {
-    const response = await this.client.get<ApiResponse<Story>>(`/stories/${id}`);
-    return response.data.data;
+    const response = await this.client.get<Story>(`/stories/${id}`);
+    return response.data;
   }
 
   async createStory(data: StoryCreate): Promise<Story> {
-    const response = await this.client.post<ApiResponse<Story>>('/stories', data);
-    return response.data.data;
+    const response = await this.client.post<Story>('/stories', data);
+    return response.data;
   }
 
   async updateStory(id: string, data: StoryUpdate): Promise<Story> {
-    const response = await this.client.put<ApiResponse<Story>>(`/stories/${id}`, data);
-    return response.data.data;
+    const response = await this.client.put<Story>(`/stories/${id}`, data);
+    return response.data;
   }
 
   async deleteStory(id: string): Promise<void> {
@@ -60,23 +59,23 @@ class ApiClient {
 
   // Chapter endpoints
   async getChapters(storyId: string): Promise<Chapter[]> {
-    const response = await this.client.get<ApiResponse<Chapter[]>>(`/stories/${storyId}/chapters`);
-    return response.data.data;
+    const response = await this.client.get<Chapter[]>(`/stories/${storyId}/chapters`);
+    return response.data;
   }
 
   async getChapter(storyId: string, chapterId: string): Promise<Chapter> {
-    const response = await this.client.get<ApiResponse<Chapter>>(
+    const response = await this.client.get<Chapter>(
       `/stories/${storyId}/chapters/${chapterId}`
     );
-    return response.data.data;
+    return response.data;
   }
 
   async createChapter(storyId: string, data: ChapterCreate): Promise<Chapter> {
-    const response = await this.client.post<ApiResponse<Chapter>>(
+    const response = await this.client.post<Chapter>(
       `/stories/${storyId}/chapters`,
       data
     );
-    return response.data.data;
+    return response.data;
   }
 
   async updateChapter(
@@ -84,11 +83,11 @@ class ApiClient {
     chapterId: string,
     data: ChapterUpdate
   ): Promise<Chapter> {
-    const response = await this.client.put<ApiResponse<Chapter>>(
+    const response = await this.client.put<Chapter>(
       `/stories/${storyId}/chapters/${chapterId}`,
       data
     );
-    return response.data.data;
+    return response.data;
   }
 
   async deleteChapter(storyId: string, chapterId: string): Promise<void> {
@@ -97,18 +96,18 @@ class ApiClient {
 
   // Character endpoints
   async getCharacters(storyId: string): Promise<Character[]> {
-    const response = await this.client.get<ApiResponse<Character[]>>(
+    const response = await this.client.get<Character[]>(
       `/stories/${storyId}/characters`
     );
-    return response.data.data;
+    return response.data;
   }
 
   async createCharacter(storyId: string, data: CharacterCreate): Promise<Character> {
-    const response = await this.client.post<ApiResponse<Character>>(
+    const response = await this.client.post<Character>(
       `/stories/${storyId}/characters`,
       data
     );
-    return response.data.data;
+    return response.data;
   }
 
   async updateCharacter(
@@ -116,11 +115,11 @@ class ApiClient {
     characterId: string,
     data: Partial<CharacterCreate>
   ): Promise<Character> {
-    const response = await this.client.put<ApiResponse<Character>>(
+    const response = await this.client.put<Character>(
       `/stories/${storyId}/characters/${characterId}`,
       data
     );
-    return response.data.data;
+    return response.data;
   }
 
   async deleteCharacter(storyId: string, characterId: string): Promise<void> {
@@ -129,39 +128,39 @@ class ApiClient {
 
   // Pipeline endpoints
   async getPipeline(storyId: string): Promise<PipelineState> {
-    const response = await this.client.get<ApiResponse<PipelineState>>(
+    const response = await this.client.get<PipelineState>(
       `/stories/${storyId}/pipeline`
     );
-    return response.data.data;
+    return response.data;
   }
 
   async startPipeline(storyId: string, config?: Record<string, any>): Promise<PipelineState> {
-    const response = await this.client.post<ApiResponse<PipelineState>>(
+    const response = await this.client.post<PipelineState>(
       `/stories/${storyId}/pipeline/start`,
-      config
+      config || {}
     );
-    return response.data.data;
+    return response.data;
   }
 
   async pausePipeline(storyId: string): Promise<PipelineState> {
-    const response = await this.client.post<ApiResponse<PipelineState>>(
+    const response = await this.client.post<PipelineState>(
       `/stories/${storyId}/pipeline/pause`
     );
-    return response.data.data;
+    return response.data;
   }
 
   async resumePipeline(storyId: string): Promise<PipelineState> {
-    const response = await this.client.post<ApiResponse<PipelineState>>(
+    const response = await this.client.post<PipelineState>(
       `/stories/${storyId}/pipeline/resume`
     );
-    return response.data.data;
+    return response.data;
   }
 
   async approvePhase(storyId: string, phase: string): Promise<PipelineState> {
-    const response = await this.client.post<ApiResponse<PipelineState>>(
+    const response = await this.client.post<PipelineState>(
       `/stories/${storyId}/pipeline/approve/${phase}`
     );
-    return response.data.data;
+    return response.data;
   }
 
   async rejectPhase(
@@ -169,11 +168,11 @@ class ApiClient {
     phase: string,
     reason: string
   ): Promise<PipelineState> {
-    const response = await this.client.post<ApiResponse<PipelineState>>(
+    const response = await this.client.post<PipelineState>(
       `/stories/${storyId}/pipeline/reject/${phase}`,
       { reason }
     );
-    return response.data.data;
+    return response.data;
   }
 
   // Health check
