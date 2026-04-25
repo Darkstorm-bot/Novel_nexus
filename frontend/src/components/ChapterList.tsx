@@ -7,12 +7,14 @@ interface ChapterListProps {
   chapters: Chapter[];
   activeChapter: Chapter | null;
   onSelectChapter: (chapter: Chapter) => void;
+  storyId?: string;
 }
 
 const ChapterList: React.FC<ChapterListProps> = ({
   chapters,
   activeChapter,
   onSelectChapter,
+  storyId,
 }) => {
   return (
     <div className="h-full glass rounded-xl border border-dark-700/50 flex flex-col overflow-hidden">

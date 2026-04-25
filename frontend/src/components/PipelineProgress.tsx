@@ -54,7 +54,6 @@ const PipelineProgress: React.FC<PipelineProgressProps> = ({ pipeline }) => {
         {phases.map((phase, index) => {
           const isCompleted = index < currentPhaseIndex;
           const isCurrent = index === currentPhaseIndex;
-          const isPending = index > currentPhaseIndex;
 
           return (
             <div key={phase} className="flex-1 flex items-center">

@@ -20,30 +20,6 @@ import ContentEditor from '../components/ContentEditor';
 import PreviewPane from '../components/PreviewPane';
 import PipelineProgress from '../components/PipelineProgress';
 
-const PHASE_ICONS: Record<string, any> = {
-  concept: MessageSquare,
-  outline: BookOpen,
-  beat_sheet: Edit3,
-  drafting: Edit3,
-  critique: MessageSquare,
-  rewrite: Edit3,
-  polish: Edit3,
-  consistency: CheckCircle,
-  export: BookOpen,
-};
-
-const PHASE_COLORS: Record<string, string> = {
-  concept: 'from-blue-500 to-cyan-500',
-  outline: 'from-purple-500 to-pink-500',
-  beat_sheet: 'from-orange-500 to-red-500',
-  drafting: 'from-green-500 to-emerald-500',
-  critique: 'from-yellow-500 to-orange-500',
-  rewrite: 'from-indigo-500 to-purple-500',
-  polish: 'from-pink-500 to-rose-500',
-  consistency: 'from-teal-500 to-cyan-500',
-  export: 'from-violet-500 to-purple-500',
-};
-
 const StoryEditor: React.FC = () => {
   const { storyId } = useParams<{ storyId: string }>();
   const { activeChapter, chapters, setChapters, setActiveChapter, viewMode, setViewMode } = useEditorStore();
@@ -117,29 +93,6 @@ const StoryEditor: React.FC = () => {
     } catch (error) {
       addNotification('Failed to pause pipeline', 'error');
     }
-  };
-
-  const handleResumePipeline = async () => {
-    if (!storyId) return;
-    try {
-      const pipelineData = await api.resumePipeline(storyId);
-      setPipeline(pipelineData);
-      addNotification('Pipeline resumed', 'success');
-    } catch (error) {
-      addNotification('Failed to resume pipeline', 'error');
-    }
-  };
-
-  const handleApprovePhase = (phase: string) => {
-    if (!storyId) return;
-    wsClient.approvePhase(phase);
-    addNotification(`Approved ${phase} phase`, 'success');
-  };
-
-  const handleRejectPhase = (phase: string, reason: string) => {
-    if (!storyId) return;
-    wsClient.rejectPhase(phase, reason);
-    addNotification(`Rejected ${phase} phase`, 'warning');
   };
 
   const handleSelectChapter = (chapter: Chapter) => {
