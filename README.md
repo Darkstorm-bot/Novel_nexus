@@ -27,8 +27,10 @@ A sophisticated full-stack application that leverages Large Language Models (LLM
 | **Backend** | Python 3.10+, FastAPI, Pydantic v2, Uvicorn |
 | **Frontend** | React 18, TypeScript, Vite, TailwindCSS v4 |
 | **Database** | ChromaDB (Vector), SQLite/PostgreSQL (Relational) |
+| **Memory System** | MemPalace v3.3+ |
 | **State Machine** | `transitions` library |
-| **LLM Integration** | LiteLLM, Ollama |
+| **LLM Integration** | LiteLLM, Ollama, MemPalace |
+| **Local LLM** | LM Studio, Ollama |
 | **Real-time** | WebSockets |
 | **Export** | EbookLib, WeasyPrint |
 
