@@ -3,7 +3,11 @@ import type {
   Story, StoryCreate, StoryUpdate,
   Chapter, ChapterCreate, ChapterUpdate,
   Character, CharacterCreate,
-  PipelineState
+  PipelineState,
+  MemPalaceStatus,
+  MemoryItem,
+  LLMTestConfig,
+  ConsistencyReport
 } from '../types';
 
 const API_BASE_URL = '/api/v1';
@@ -178,6 +182,80 @@ class ApiClient {
   // Health check
   async healthCheck(): Promise<any> {
     const response = await this.client.get('/health');
+    return response.data;
+  }
+
+  // MemPalace endpoints
+  async getMemPalaceStatus(): Promise<MemPalaceStatus> {
+    const response = await this.client.get<MemPalaceStatus>('/mempalace/status');
+    return response.data;
+  }
+
+  async testLLMConnection(config: LLMTestConfig): Promise<any> {
+    const response = await this.client.post('/mempalace/test-llm', config);
+    return response.data;
+  }
+
+  async initializeMemPalace(config?: LLMTestConfig): Promise<any> {
+    const response = await this.client.post('/mempalace/initialize', config || {});
+    return response.data;
+  }
+
+  async storeMemory(
+    collectionName: string,
+    content: string,
+    metadata?: Record<string, any>
+  ): Promise<{ success: boolean; message: string }> {
+    const response = await this.client.post('/mempalace/memory/store', {
+      collection_name: collectionName,
+      content,
+      metadata
+    });
+    return response.data;
+  }
+
+  async searchMemories(
+    collectionName: string,
+    query: string,
+    nResults: number = 5
+  ): Promise<MemoryItem[]> {
+    const response = await this.client.post('/mempalace/memory/search', {
+      collection_name: collectionName,
+      query,
+      n_results: nResults
+    });
+    const data = response.data as { success: boolean; results: MemoryItem[] };
+    return data.success ? data.results : [];
+  }
+
+  async checkConsistency(
+    storyId: string,
+    newContent: string,
+    context?: string
+  ): Promise<ConsistencyReport> {
+    const response = await this.client.post('/mempalace/consistency/check', {
+      story_id: storyId,
+      new_content: newContent,
+      context: context || null
+    });
+    const data = response.data as { success: boolean; report: ConsistencyReport };
+    return data.report;
+  }
+
+  async extractEntities(
+    storyId: string,
+    content: string
+  ): Promise<{ characters: string[]; locations: string[]; objects: string[] }> {
+    const response = await this.client.post('/mempalace/entities/extract', {
+      story_id: storyId,
+      content
+    });
+    const data = response.data as { success: boolean; entities: any };
+    return data.entities;
+  }
+
+  async debugConnection(config: LLMTestConfig): Promise<any> {
+    const response = await this.client.post('/mempalace/debug/connection', config);
     return response.data;
   }
 }
